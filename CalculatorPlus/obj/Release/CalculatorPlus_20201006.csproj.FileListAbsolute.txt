@@ -1,0 +1,6 @@
+C:\Users\LM\source\repos\CalculatorPlus_20201006\CalculatorPlus_20201006\bin\Release\CalculatorPlus_20201006.exe
+C:\Users\LM\source\repos\CalculatorPlus_20201006\CalculatorPlus_20201006\bin\Release\CalculatorPlus_20201006.pdb
+C:\Users\LM\source\repos\CalculatorPlus_20201006\CalculatorPlus_20201006\obj\Release\CalculatorPlus_20201006.csproj.CoreCompileInputs.cache
+C:\Users\LM\source\repos\CalculatorPlus_20201006\CalculatorPlus_20201006\obj\Release\CalculatorPlus_20201006.exe
+C:\Users\LM\source\repos\CalculatorPlus_20201006\CalculatorPlus_20201006\obj\Release\CalculatorPlus_20201006.pdb
+C:\Users\LM\source\repos\CalculatorPlus_20201006\CalculatorPlus_20201006\obj\Release\CalculatorPlus_20201006.csprojAssemblyReference.cache
