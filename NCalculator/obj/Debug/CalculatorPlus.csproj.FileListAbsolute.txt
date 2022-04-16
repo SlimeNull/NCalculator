@@ -1,0 +1,8 @@
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\bin\Debug\CalculatorPlus.exe.config
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\bin\Debug\CalculatorPlus.exe
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\bin\Debug\CalculatorPlus.pdb
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\obj\Debug\CalculatorPlus.csproj.AssemblyReference.cache
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\obj\Debug\CalculatorPlus.csproj.SuggestedBindingRedirects.cache
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\obj\Debug\CalculatorPlus.csproj.CoreCompileInputs.cache
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\obj\Debug\CalculatorPlus.exe
+C:\Users\SlimeNull\source\repos\CalculatorPlus\CalculatorPlus\obj\Debug\CalculatorPlus.pdb
