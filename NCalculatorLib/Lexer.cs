@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Null.Calculator;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Null.Calculator
+namespace NCalculatorLib
 {
     public class Lexer
     {
@@ -25,14 +26,10 @@ namespace Null.Calculator
                 char cch = (char)ch;
 
                 if (ch == -1)
-                {
                     yield break;
-                }
 
                 if (char.IsWhiteSpace(cch))
-                {
                     continue;
-                }
                 else if (char.IsLetter(cch))
                 {
                     StringBuilder sb = new StringBuilder();
@@ -124,7 +121,7 @@ namespace Null.Calculator
                             }
                         }
                     }
-                    
+
                     yield return new Token(TokenKind.Number, sb.ToString());
                     continue;
                 }

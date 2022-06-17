@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NCalculatorLib;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,21 +12,36 @@ namespace Null.Calculator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Calculator    By SlimeNull, 2022");
-            Console.WriteLine("  Funs: abs ceil floor min max ln log log10 sqrt exp sin cos tan asin acos atan sinh cosh tanh");
-            Console.WriteLine("  Opts: (...) * / % ** ^ + - > >= < <= == != & | .?.:.");
-            Console.WriteLine();
-            
-            while (true)
+            if (args.Length == 0)
             {
-                Console.Write(">>> ");
-                var input = Console.ReadLine();
-                if (string.IsNullOrEmpty(input))
-                    return;
+                Console.WriteLine("Calculator    By SlimeNull, 2022");
+                Console.WriteLine("  Funs: ﻿abs ceil floor min max sum ln log log10 pow sqrt exp cbrt sin cos tan");
+                Console.WriteLine("        asin acos atan sinh cosh tanh asinh acosh atanh round sign truncate");
+                Console.WriteLine("  Opts: (...) * / % ** ^ + - > >= < <= == != & | .?.:.");
+                Console.WriteLine();
 
-                Token[] tokens = new Lexer(new StringReader(input)).Lex().ToArray();
-                Expr expr = new Parser(tokens).Parse();
-                Console.WriteLine(expr.Eval());
+#if DEBUG
+                double count = 0;
+                NCalc.Variables["count"] = () => count++;
+                NCalc.Functions["myfunc"] = (values) => values.Sum();
+#endif
+
+                while (true)
+                {
+                    Console.Write(">>> ");
+                    var input = Console.ReadLine();
+                    if (string.IsNullOrEmpty(input))
+                        return;
+
+                    Console.WriteLine(NCalc.Go(input));
+                }
+            }
+            else
+            {
+                foreach (string exprstr in args)
+                {
+                    Console.WriteLine(NCalc.Go(exprstr));
+                }
             }
         }
     }

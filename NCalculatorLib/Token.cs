@@ -32,13 +32,13 @@ namespace Null.Calculator
     
     public struct Token
     {
-        public Token(TokenKind kind, string value)
+        public Token(TokenKind kind, string? value)
         {
             Kind = kind;
             Value = value;
         }
 
         public readonly TokenKind Kind;
-        public readonly string Value;
+        public readonly string? Value;
     }
 }

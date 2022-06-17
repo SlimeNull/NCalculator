@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Null.Calculator;
 
 #nullable enable
 
-namespace Null.Calculator
+namespace NCalculatorLib
 {
     public class Parser
     {
@@ -125,7 +126,7 @@ namespace Null.Calculator
             int tempindex1 = index;
             if (MatchEqExpr(ref tempindex1, out var eqExpr))
             {
-                if (Tokens[tempindex1].Kind != TokenKind.Question)
+                if (tempindex1 < Tokens.Length && Tokens[tempindex1].Kind != TokenKind.Question)
                     return false;
 
                 int tempindex2 = tempindex1 + 1;
@@ -488,10 +489,10 @@ namespace Null.Calculator
             rst = null;
             if (index >= Tokens.Length)
                 return false;
-            
+
             if (Tokens[index].Kind == TokenKind.Number)
             {
-                rst = new NumExpr(Tokens[index].Value);
+                rst = new NumExpr(Tokens[index].Value!);
                 index += 1;
                 return true;
             }
@@ -504,10 +505,10 @@ namespace Null.Calculator
             rst = null;
             if (index >= Tokens.Length)
                 return false;
-            
+
             if (Tokens[index].Kind == TokenKind.Identifier)
             {
-                rst = new ConstExpr(Tokens[index].Value);
+                rst = new ConstExpr(Tokens[index].Value!);
                 index += 1;
                 return true;
             }
@@ -519,18 +520,16 @@ namespace Null.Calculator
         {
             int index = 0;
             if (MatchExpr(ref index, out var rst))
-            {
                 return rst!;
-            }
             else
                 throw new ArgumentOutOfRangeException();
         }
     }
 
-    public abstract class Expr
-    {
-        public abstract double Eval();
-    }
+    //public abstract class Expr
+    //{
+    //    public abstract double Eval();
+    //}
 
     public class ExprSeqExpr : Expr
     {
@@ -637,36 +636,12 @@ namespace Null.Calculator
 
         public override double Eval()
         {
-            return Func.Value switch
-            {
-                "abs" => Math.Abs(Params.Eval()),
-                "ceil" => Math.Ceiling(Params.Eval()),
-                "floor" => Math.Floor(Params.Eval()),
-
-                "min" => Params.SeqValue.Select(e => e.Eval()).Min(),
-                "max" => Params.SeqValue.Select(e => e.Eval()).Max(),
-
-                "ln" => Math.Log(Params.Eval()),
-                "log" => Params.SeqValue.Length == 1 ? Math.Log(Params.Eval()) : Math.Log(Params[0].Eval(), Params[1].Eval()),
-                "log10" => Math.Log10(Params.Eval()),
-
-                "sqrt" => Math.Sqrt(Params.Eval()),
-                "exp" => Math.Exp(Params.Eval()),
-
-                "sin" => Math.Sin(Params.Eval()),
-                "cos" => Math.Cos(Params.Eval()),
-                "tan" => Math.Tan(Params.Eval()),
-
-                "asin" => Math.Asin(Params.Eval()),
-                "acos" => Math.Acos(Params.Eval()),
-                "atan" => Math.Atan(Params.Eval()),
-
-                "sinh" => Math.Sinh(Params.Eval()),
-                "cosh" => Math.Cosh(Params.Eval()),
-                "tanh" => Math.Tanh(Params.Eval()),
-
-                _ => throw new ArgumentException("Unknown function")
-            };
+            Func<double[], double>? func;
+            if (NCalc.Functions.TryGetValue(Func.Value!, out func) ||
+                NCalc.DefaultFunctions.TryGetValue(Func.Value!, out func))
+                return func.Invoke(Params.SeqValue.Select(expr => expr.Eval()).ToArray());
+            else
+                throw new ArgumentException($"Unknown function: {Func.Value}");
         }
     }
 
@@ -790,12 +765,17 @@ namespace Null.Calculator
 
         public static double GetConst(string name)
         {
-            return name switch
-            {
-                "pi" => Math.PI,
-                "e" => Math.E,
-                _ => throw new ArgumentException("Unknow const")
-            };
+            double value;
+            Func<double>? valueGetter;
+
+            if (NCalc.Constants.TryGetValue(name, out value) ||
+                NCalc.DefaultConstants.TryGetValue(name, out value))
+                return value;
+            else if (NCalc.Variables.TryGetValue(name, out valueGetter) ||
+                     NCalc.DefaultVariables.TryGetValue(name, out valueGetter))
+                return valueGetter.Invoke();
+            else
+                throw new ArgumentException($"Unknown constant or variable: {name}");
         }
 
         public override double Eval()
