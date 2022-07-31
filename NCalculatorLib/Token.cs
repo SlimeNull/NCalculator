@@ -40,5 +40,36 @@ namespace Null.Calculator
 
         public readonly TokenKind Kind;
         public readonly string? Value;
+
+        public override string ToString()
+        {
+            if (Value != null)
+                return Value;
+
+            return Kind switch
+            {
+                TokenKind.Identifier => "err",
+                TokenKind.Number => "0",
+                TokenKind.Plus => "+",
+                TokenKind.Sub => "-",
+                TokenKind.Mul => "*",
+                TokenKind.Div => "/",
+                TokenKind.Pow => "^",
+                TokenKind.Mod => "%",
+                TokenKind.LParen => "(",
+                TokenKind.RParen => ")",
+                TokenKind.Gtr => ">",
+                TokenKind.Lss => "<",
+                TokenKind.GtrEq => ">=",
+                TokenKind.LssEq => "<=",
+                TokenKind.NoEq => "!=",
+                TokenKind.Eq => "==",
+                TokenKind.Colon => ":",
+                TokenKind.Question => "?",
+                TokenKind.Comma => ",",
+
+                _ => string.Empty
+            };
+        }
     }
 }

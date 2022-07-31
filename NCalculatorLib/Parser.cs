@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NCalculatorLib.Exprs;
 using Null.Calculator;
 
 #nullable enable
@@ -165,7 +166,7 @@ namespace NCalculatorLib
             }
             else if (MatchRelExpr(ref tempindex1, out var relExpr))
             {
-                if (Tokens[tempindex1].Kind != TokenKind.Question)
+                if (tempindex1 < Tokens.Length && Tokens[tempindex1].Kind != TokenKind.Question)
                     return false;
 
                 int tempindex2 = tempindex1 + 1;
@@ -386,7 +387,11 @@ namespace NCalculatorLib
                 int tempindex2 = tempindex1 + 1;
                 if (MatchPlusExpr(ref tempindex2, out var plusExpr))
                 {
-                    rst = new PlusExpr(optToken, unitExpr!, plusExpr!);
+                    rst = new PlusExpr(plusExpr!.Operator,
+                        new PlusExpr(optToken, unitExpr!, plusExpr!.LeftExpr)!,
+                        plusExpr.RightExpr!);
+                    rst = BinExpr.SpinExpr(rst);
+
                     index = tempindex2;
                     return true;
                 }
@@ -411,6 +416,7 @@ namespace NCalculatorLib
         {
             rst = null;
             int tempindex1 = index;
+
             // 匹配左侧是否是计算单元
             if (MatchUnitExpr(ref tempindex1, out var unitExpr))
             {
@@ -428,7 +434,11 @@ namespace NCalculatorLib
                 int tempindex2 = tempindex1 + 1;
                 if (MatchMulExpr(ref tempindex2, out var mulExpr))
                 {
-                    rst = new MulExpr(optToken, unitExpr!, mulExpr!);
+                    rst = new MulExpr(mulExpr!.Operator,
+                              new MulExpr(optToken, unitExpr!, mulExpr!.LeftExpr),
+                              mulExpr.RightExpr!);
+                    rst = BinExpr.SpinExpr(rst);
+
                     index = tempindex2;
                     return true;
                 }
@@ -446,7 +456,7 @@ namespace NCalculatorLib
         public bool MatchUnitExpr(ref int index, out UnitExpr? rst)
         {
             rst = null;
-            bool signed = false;
+            bool signed;
             int tempindex = index;
 
             if (index >= Tokens.Length)
@@ -520,267 +530,15 @@ namespace NCalculatorLib
         {
             int index = 0;
             if (MatchExpr(ref index, out var rst))
+            {
+                if (index < Tokens.Length)
+                    throw new ArgumentException($"Unexpected token: {Tokens[index]} at index {index}");
                 return rst!;
+            }
             else
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
-    //public abstract class Expr
-    //{
-    //    public abstract double Eval();
-    //}
-
-    public class ExprSeqExpr : Expr
-    {
-        public readonly Expr[] SeqValue;
-
-        public ExprSeqExpr(params Expr[] exprs)
-        {
-            if (exprs.Length < 1)
-                throw new ArgumentOutOfRangeException();
-
-            SeqValue = exprs;
-        }
-
-        public Expr this[int index] => SeqValue[index];
-
-        public override double Eval()
-        {
-            return SeqValue[0].Eval();
-        }
-    }
-
-    public class CondExpr : Expr
-    {
-        public CondExpr(Expr condition, Expr leftExpr, Expr rightExpr)
-        {
-            Condition = condition;
-            LeftExpr = leftExpr;
-            RightExpr = rightExpr;
-        }
-
-        public readonly Expr Condition;
-        public readonly Expr LeftExpr;
-        public readonly Expr RightExpr;
-
-        public override double Eval()
-        {
-            return Condition.Eval() != 0 ? LeftExpr.Eval() : RightExpr.Eval();
-        }
-    }
-
-    public class EqExpr : Expr
-    {
-        public EqExpr(Token @operator, Expr leftExpr, Expr rightExpr)
-        {
-            Operator = @operator;
-            LeftExpr = leftExpr;
-            RightExpr = rightExpr;
-        }
-
-        public readonly Token Operator;
-        public readonly Expr LeftExpr;
-        public readonly Expr RightExpr;
-
-        public override double Eval()
-        {
-            return Operator.Kind switch
             {
-                TokenKind.Eq => LeftExpr.Eval() == RightExpr.Eval() ? 1 : 0,
-                TokenKind.NoEq => LeftExpr.Eval() != RightExpr.Eval() ? 1 : 0,
-                _ => throw new ArgumentOutOfRangeException("Unkonwn operator"),
-            };
-        }
-    }
-
-    public class RelExpr : Expr
-    {
-        public RelExpr(Token opt, Expr leftExpr, Expr rightExpr)
-        {
-            Operator = opt;
-            LeftExpr = leftExpr;
-            RightExpr = rightExpr;
-        }
-
-        public readonly Token Operator;
-        public readonly Expr LeftExpr;
-        public readonly Expr RightExpr;
-
-        public override double Eval()
-        {
-            return Operator.Kind switch
-            {
-                TokenKind.Gtr => LeftExpr.Eval() > RightExpr.Eval() ? 1 : 0,
-                TokenKind.Lss => LeftExpr.Eval() < RightExpr.Eval() ? 1 : 0,
-                TokenKind.GtrEq => LeftExpr.Eval() >= RightExpr.Eval() ? 1 : 0,
-                TokenKind.LssEq => LeftExpr.Eval() <= RightExpr.Eval() ? 1 : 0,
-                _ => throw new ArgumentOutOfRangeException("Unkonw operator"),
-            };
-        }
-    }
-
-    /// <summary>
-    /// id quote_expr
-    /// </summary>
-    public class FunExpr : Expr
-    {
-        public readonly Token Func;
-        public readonly ExprSeqExpr Params;
-
-        public FunExpr(Token func, ExprSeqExpr param)
-        {
-            Func = func;
-            Params = param;
-        }
-
-        public override double Eval()
-        {
-            Func<double[], double>? func;
-            if (NCalc.Functions.TryGetValue(Func.Value!, out func) ||
-                NCalc.DefaultFunctions.TryGetValue(Func.Value!, out func))
-                return func.Invoke(Params.SeqValue.Select(expr => expr.Eval()).ToArray());
-            else
-                throw new ArgumentException($"Unknown function: {Func.Value}");
-        }
-    }
-
-    /// <summary>
-    /// add expression
-    /// 
-    /// | mul + | - plus
-    /// | mul + | - mul
-    /// | unit + | - plus
-    /// | unit + | - mul
-    /// | unit - | - unit
-    /// </summary>
-    public class PlusExpr : Expr
-    {
-        public readonly Token Operator;
-        public readonly Expr LeftExpr;
-        public readonly Expr RightExpr;
-
-        public PlusExpr(Token op, Expr left, Expr right)
-        {
-            Operator = op;
-            LeftExpr = left;
-            RightExpr = right;
-        }
-
-        public override double Eval()
-        {
-            return Operator.Kind switch
-            {
-                TokenKind.Plus => LeftExpr.Eval() + RightExpr.Eval(),
-                TokenKind.Sub => LeftExpr.Eval() - RightExpr.Eval(),
-                _ => throw new Exception("Invalid operator")
-            };
-        }
-    }
-
-    /// <summary>
-    /// multiply expression
-    /// 
-    /// | unit * | / | % | ^ mul_expr
-    /// | unit * | / | % | ^ unit
-    /// </summary>
-    public class MulExpr : Expr
-    {
-        public readonly Token Operator;
-        public readonly Expr LeftExpr;
-        public readonly Expr RightExpr;
-
-        public MulExpr(Token op, Expr left, Expr right)
-        {
-            Operator = op;
-            LeftExpr = left;
-            RightExpr = right;
-        }
-
-        public override double Eval()
-        {
-            return Operator.Kind switch
-            {
-                TokenKind.Mul => LeftExpr.Eval() * RightExpr.Eval(),
-                TokenKind.Div => LeftExpr.Eval() / RightExpr.Eval(),
-                TokenKind.Mod => LeftExpr.Eval() % RightExpr.Eval(),
-                TokenKind.Pow => Math.Pow(LeftExpr.Eval(), RightExpr.Eval()),
-                _ => throw new Exception("Invalid operator")
-            };
-        }
-    }
-
-    /// <summary>
-    /// basic unit
-    /// 
-    /// | num
-    /// | fun_expr
-    /// | quote_expr
-    /// </summary>
-    public class UnitExpr : Expr
-    {
-        public readonly bool Signed;
-        public readonly Expr Value;
-
-        public UnitExpr(Expr value, bool signed)
-        {
-            Value = value;
-            Signed = signed;
-        }
-
-        public override double Eval()
-        {
-            return Signed ? -Value.Eval() : Value.Eval();
-        }
-    }
-
-
-    /// <summary>
-    /// basic number
-    /// 
-    /// | num_literal
-    /// </summary>
-    public class NumExpr : Expr
-    {
-        public readonly string Value;
-
-        public NumExpr(string value)
-        {
-            Value = value;
-        }
-
-        public override double Eval()
-        {
-            return double.Parse(Value);
-        }
-    }
-
-    public class ConstExpr : Expr
-    {
-        public readonly string Name;
-        public ConstExpr(string name)
-        {
-            Name = name;
-        }
-
-        public static double GetConst(string name)
-        {
-            double value;
-            Func<double>? valueGetter;
-
-            if (NCalc.Constants.TryGetValue(name, out value) ||
-                NCalc.DefaultConstants.TryGetValue(name, out value))
-                return value;
-            else if (NCalc.Variables.TryGetValue(name, out valueGetter) ||
-                     NCalc.DefaultVariables.TryGetValue(name, out valueGetter))
-                return valueGetter.Invoke();
-            else
-                throw new ArgumentException($"Unknown constant or variable: {name}");
-        }
-
-        public override double Eval()
-        {
-            return GetConst(Name);
+                throw new ArgumentException();
+            }
         }
     }
 }

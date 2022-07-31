@@ -15,8 +15,8 @@ namespace Null.Calculator
             if (args.Length == 0)
             {
                 Console.WriteLine("Calculator    By SlimeNull, 2022");
-                Console.WriteLine("  Funs: ﻿abs ceil floor min max sum ln log log10 pow sqrt exp cbrt sin cos tan");
-                Console.WriteLine("        asin acos atan sinh cosh tanh asinh acosh atanh round sign truncate");
+                Console.WriteLine("  Funs: abs ceil floor min max sum ln log log10 pow sqrt exp cbrt sin cos tan");
+                Console.WriteLine("        asin acos atan sinh cosh tanh asinh acosh atanh round sign truncate fact");
                 Console.WriteLine("  Opts: (...) * / % ** ^ + - > >= < <= == != & | .?.:.");
                 Console.WriteLine();
 
@@ -33,14 +33,29 @@ namespace Null.Calculator
                     if (string.IsNullOrEmpty(input))
                         return;
 
-                    Console.WriteLine(NCalc.Go(input));
+                    try
+                    {
+                        Console.WriteLine(NCalc.Go(input));
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine($"Err: {ex.Message}");
+                    }
                 }
             }
             else
             {
                 foreach (string exprstr in args)
                 {
-                    Console.WriteLine(NCalc.Go(exprstr));
+                    try
+                    {
+                        Console.WriteLine(NCalc.Go(exprstr));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Err: {ex.Message}");
+                        Environment.ExitCode--;
+                    }
                 }
             }
         }

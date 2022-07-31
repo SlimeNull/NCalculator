@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
+using NCalculatorLib.Exprs;
 
 namespace NCalculatorLib
 {
@@ -31,10 +32,15 @@ namespace NCalculatorLib
                 { "time", () =>
                     {
                         DateTime now = DateTime.Now;
-                        return now.Hour * 1000000 +
-                               now.Minute * 10000 +
-                               now.Second * 100 +
+                        return now.Hour * 10000000 +
+                               now.Minute * 100000 +
+                               now.Second * 1000 +
                                now.Millisecond;
+                    }
+                },
+                { "timestamp", () =>
+                    {
+                        return DateTimeOffset.Now.ToUnixTimeSeconds();
                     }
                 }
             };
@@ -68,6 +74,8 @@ namespace NCalculatorLib
                 { "round", FunctionDefinition.Round },
                 { "sign", FunctionDefinition.Sign },
                 { "truncate", FunctionDefinition.Truncate },
+
+                { "fact", FunctionDefinition.Fact },
             };
         }
 

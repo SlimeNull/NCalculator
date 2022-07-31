@@ -149,6 +149,9 @@ namespace NCalculatorLib
                         case '/':
                             yield return new Token(TokenKind.Div, null);
                             break;
+                        case '%':
+                            yield return new Token(TokenKind.Mod, null);
+                            break;
                         case '(':
                             yield return new Token(TokenKind.LParen, null);
                             break;
@@ -173,7 +176,7 @@ namespace NCalculatorLib
                                 baseReader.Read();
                                 yield return new Token(TokenKind.GtrEq, null);
                             }
-                            if (baseReader.Peek() == '<')
+                            else if (baseReader.Peek() == '<')
                             {
                                 baseReader.Read();
                                 yield return new Token(TokenKind.NoEq, null);
@@ -189,7 +192,7 @@ namespace NCalculatorLib
                                 baseReader.Read();
                                 yield return new Token(TokenKind.LssEq, null);
                             }
-                            if (baseReader.Peek() == '>')
+                            else if (baseReader.Peek() == '>')
                             {
                                 baseReader.Read();
                                 yield return new Token(TokenKind.NoEq, null);

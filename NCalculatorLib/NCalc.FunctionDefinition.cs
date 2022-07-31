@@ -229,6 +229,19 @@
                     throw new ArgumentException("One parameter is required.");
                 return Math.Truncate(args[0]);
             }
+
+            public static double Fact(double[] args)
+            {
+                if (args.Length != 1)
+                    throw new ArgumentException("One parameter is required.");
+                double rst = 1;
+                for (int i = 1; i <= args[0]; i++)
+                {
+                    rst *= i;
+                }
+
+                return rst;
+            }
         }
     }
 }

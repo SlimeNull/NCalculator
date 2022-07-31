@@ -5,14 +5,14 @@ VisualStudioVersion = 17.2.32317.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCalculator", "NCalculator\NCalculator.csproj", "{E4963766-CCD8-470A-9112-18D05673B407}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NCalculatorCpp", "NCalculatorCpp\NCalculatorCpp.vcxproj", "{09189134-BB13-412B-9B7F-68240CDC17F7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF9CEC61-A376-48A2-8360-D1D4884B95DD}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCalculatorLib", "NCalculatorLib\NCalculatorLib.csproj", "{3AEE1977-821F-4B98-9A44-37B35C32527F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCalculatorLib", "NCalculatorLib\NCalculatorLib.csproj", "{3AEE1977-821F-4B98-9A44-37B35C32527F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NCalculatorCppLib", "NCalculatorCppLib\NCalculatorCppLib.vcxproj", "{39D029DF-F755-4727-8C32-73CD560554F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,18 +36,6 @@ Global
 		{E4963766-CCD8-470A-9112-18D05673B407}.Release|x64.Build.0 = Release|Any CPU
 		{E4963766-CCD8-470A-9112-18D05673B407}.Release|x86.ActiveCfg = Release|Any CPU
 		{E4963766-CCD8-470A-9112-18D05673B407}.Release|x86.Build.0 = Release|Any CPU
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Debug|Any CPU.Build.0 = Debug|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Debug|x64.ActiveCfg = Debug|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Debug|x64.Build.0 = Debug|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Debug|x86.ActiveCfg = Debug|Win32
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Debug|x86.Build.0 = Debug|Win32
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Release|Any CPU.ActiveCfg = Release|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Release|Any CPU.Build.0 = Release|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Release|x64.ActiveCfg = Release|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Release|x64.Build.0 = Release|x64
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Release|x86.ActiveCfg = Release|Win32
-		{09189134-BB13-412B-9B7F-68240CDC17F7}.Release|x86.Build.0 = Release|Win32
 		{3AEE1977-821F-4B98-9A44-37B35C32527F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3AEE1977-821F-4B98-9A44-37B35C32527F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AEE1977-821F-4B98-9A44-37B35C32527F}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -60,6 +48,18 @@ Global
 		{3AEE1977-821F-4B98-9A44-37B35C32527F}.Release|x64.Build.0 = Release|Any CPU
 		{3AEE1977-821F-4B98-9A44-37B35C32527F}.Release|x86.ActiveCfg = Release|Any CPU
 		{3AEE1977-821F-4B98-9A44-37B35C32527F}.Release|x86.Build.0 = Release|Any CPU
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Debug|Any CPU.Build.0 = Debug|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Debug|x64.ActiveCfg = Debug|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Debug|x64.Build.0 = Debug|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Debug|x86.ActiveCfg = Debug|Win32
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Debug|x86.Build.0 = Debug|Win32
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Release|Any CPU.ActiveCfg = Release|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Release|Any CPU.Build.0 = Release|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Release|x64.ActiveCfg = Release|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Release|x64.Build.0 = Release|x64
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Release|x86.ActiveCfg = Release|Win32
+		{39D029DF-F755-4727-8C32-73CD560554F5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
