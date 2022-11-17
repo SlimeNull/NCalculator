@@ -10,24 +10,24 @@ using namespace NCalculator;
 
 namespace NCalculatorLibExprs
 {
-	class CondExpr : public Expr
+	class cond_expr : public expr
 	{
 	public:
-		virtual ~CondExpr()
+		virtual ~cond_expr()
 		{
 			delete Condition;
 			delete LeftExpr;
 			delete RightExpr;
 		}
 
-		CondExpr(Expr *condition, Expr *leftExpr, Expr *rightExpr);
+		cond_expr(expr *condition, expr *leftExpr, expr *rightExpr);
 
-		Expr *const Condition;
-		Expr *const LeftExpr;
-		Expr *const RightExpr;
+		expr *const Condition;
+		expr *const LeftExpr;
+		expr *const RightExpr;
 
-		double Eval() override;
+		double eval() override;
 
-		std::vector<Token> EnumTokens() override;
+		std::vector<token> enum_tokens() override;
 	};
 }
