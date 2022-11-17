@@ -10,25 +10,25 @@ using namespace NCalculator;
 
 namespace NCalculatorLibExprs
 {
-	class BinExpr : public Expr
+	class bin_expr : public expr
 	{
 	public:
-		const Token Operator;
-		Expr *const LeftExpr;
-		Expr *const RightExpr;
+		const token Operator;
+		expr *const LeftExpr;
+		expr *const RightExpr;
 
-		virtual ~BinExpr()
+		virtual ~bin_expr()
 		{
 			delete LeftExpr;
 			delete RightExpr;
 		}
 
-		BinExpr(Token op, Expr *left, Expr *right);
+		bin_expr(token op, expr *left, expr *right);
 
-		static MulExpr *SpinExpr(MulExpr *expr);
+		static mul_expr *SpinExpr(mul_expr *expr);
 
 		static PlusExpr *SpinExpr(PlusExpr *expr);
 
-		std::vector<Token> EnumTokens() override;
+		std::vector<token> enum_tokens() override;
 	};
 }
