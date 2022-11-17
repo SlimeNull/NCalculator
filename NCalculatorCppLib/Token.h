@@ -4,7 +4,7 @@
 
 namespace NCalculator
 {
-	enum class TokenKind
+	enum class token_kind
 	{
 		Identifier,
 		Number,
@@ -28,21 +28,21 @@ namespace NCalculator
 		Comma
 	};
 
-	class Token
+	class token
 	{
 	public:
 //C# TO C++ CONVERTER WARNING: Nullable reference types have no equivalent in C++:
 //ORIGINAL LINE: public Token(TokenKind kind, string? value)
-		Token(TokenKind kind, const std::wstring &value);
+		token(token_kind kind, const std::wstring &value);
 
-		const TokenKind Kind;
+		const token_kind Kind;
 //C# TO C++ CONVERTER WARNING: Nullable reference types have no equivalent in C++:
 //ORIGINAL LINE: public readonly string? Value;
 		const std::wstring Value;
 
 		std::wstring ToString();
 
-		Token() : Kind(static_cast<NCalculator::TokenKind>(0)), Value(L"")
+		token() : Kind(static_cast<NCalculator::token_kind>(0)), Value(L"")
 		{
 		}
 	};
