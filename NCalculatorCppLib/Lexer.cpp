@@ -5,251 +5,257 @@ using namespace NCalculator;
 namespace NCalculatorLib
 {
 
-	TextReader *Lexer::getBaseReader() const
-	{
-		return baseReader;
-	}
+    wstring_reader* lexer::getBaseReader() const
+    {
+        return baseReader;
+    }
 
-//C# TO C++ CONVERTER TODO TASK: Throw expressions are not converted by C# to C++ Converter:
-//ORIGINAL LINE: public Lexer(TextReader tr)
-	Lexer::Lexer(TextReader *tr) : baseReader((tr != nullptr) ? tr : throw std::invalid_argument("tr"))
-	{
-	}
+    lexer::lexer()
+    {
+        baseReader = new wstring_reader();
+    }
 
-	std::vector<Token> Lexer::Lex()
-	{
-		std::vector<Token> rst;
+    //C# TO C++ CONVERTER TODO TASK: Throw expressions are not converted by C# to C++ Converter:
+    //ORIGINAL LINE: public Lexer(TextReader tr)
+    lexer::lexer(wstring_reader* const tr)
+    {
+        baseReader = tr;
+    }
 
-		while (true)
-		{
-			auto ch = baseReader->Read();
-			wchar_t cch = static_cast<wchar_t>(ch);
+    std::vector<token> lexer::Lex()
+    {
+        std::vector<token> rst;
 
-			if (ch == -1)
-			{
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-				return rst;
-			}
+        while (true)
+        {
+            auto ch = baseReader->read();
+            wchar_t cch = static_cast<wchar_t>(ch);
 
-			if (std::isspace(cch))
-			{
-				continue;
-			}
-			else if (std::isalpha(cch))
-			{
-				StringBuilder *sb = new StringBuilder();
-				sb->append(cch);
+            if (ch == -1)
+            {
+                //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                return rst;
+            }
 
-				while (true)
-				{
-					ch = baseReader->Peek();
-					cch = static_cast<wchar_t>(ch);
+            if (std::isspace(cch))
+            {
+                continue;
+            }
+            else if (std::isalpha(cch))
+            {
+                StringBuilder* sb = new StringBuilder();
+                sb->append(cch);
 
-					if (std::isalnum(cch))
-					{
-						baseReader->Read();
-						sb->append(cch);
-					}
-					else
-					{
-						break;
-					}
-				}
+                while (true)
+                {
+                    ch = baseReader->peek();
+                    cch = static_cast<wchar_t>(ch);
 
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-				rst.push_back(Token(TokenKind::Identifier, sb->toString()));
+                    if (std::isalnum(cch))
+                    {
+                        baseReader->read();
+                        sb->append(cch);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
-				delete sb;
-				continue;
+                //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                rst.push_back(token(token_kind::Identifier, sb->toString()));
 
-				delete sb;
-			}
-			else if (std::isdigit(cch))
-			{
-				StringBuilder *sb = new StringBuilder();
-				sb->append(cch);
+                delete sb;
+                continue;
 
-				while (ch != -1)
-				{
-					ch = baseReader->Peek();
-					cch = static_cast<wchar_t>(ch);
-					if (ch >= L'0' && ch <= L'9')
-					{
-						baseReader->Read();
-						sb->append(cch);
-					}
-					else
-					{
-						break;
-					}
-				}
+                delete sb;
+            }
+            else if (std::isdigit(cch))
+            {
+                StringBuilder* sb = new StringBuilder();
+                sb->append(cch);
 
-				if (cch == L'.')
-				{
-					ch = baseReader->Read(); // skip '.'
-					sb->append(cch);
-					while (ch != -1)
-					{
-						ch = baseReader->Peek();
-						cch = static_cast<wchar_t>(ch);
-						if (ch >= L'0' && ch <= L'9')
-						{
-							baseReader->Read();
-							sb->append(cch);
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
+                while (ch != -1)
+                {
+                    ch = baseReader->peek();
+                    cch = static_cast<wchar_t>(ch);
+                    if (ch >= L'0' && ch <= L'9')
+                    {
+                        baseReader->read();
+                        sb->append(cch);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
-				if (cch == L'e' || cch == L'E')
-				{
-					baseReader->Read(); // skip 'e'
-					sb->append(cch);
+                if (cch == L'.')
+                {
+                    ch = baseReader->read(); // skip '.'
+                    sb->append(cch);
+                    while (ch != -1)
+                    {
+                        ch = baseReader->peek();
+                        cch = static_cast<wchar_t>(ch);
+                        if (ch >= L'0' && ch <= L'9')
+                        {
+                            baseReader->read();
+                            sb->append(cch);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
 
-					ch = baseReader->Read();
-					if (ch >= L'0' || ch <= L'9' || ch == L'+' || ch == L'-')
-					{
-						baseReader->Read();
-						sb->append(static_cast<wchar_t>(ch));
-					}
+                if (cch == L'e' || cch == L'E')
+                {
+                    baseReader->read(); // skip 'e'
+                    sb->append(cch);
 
-					while (ch != -1)
-					{
-						ch = baseReader->Peek();
-						cch = static_cast<wchar_t>(ch);
-						if (ch >= L'0' && ch <= L'9')
-						{
-							baseReader->Read();
-							sb->append(cch);
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
+                    ch = baseReader->read();
+                    if (ch >= L'0' || ch <= L'9' || ch == L'+' || ch == L'-')
+                    {
+                        baseReader->read();
+                        sb->append(static_cast<wchar_t>(ch));
+                    }
 
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-				rst.push_back(Token(TokenKind::Number, sb->toString()));
+                    while (ch != -1)
+                    {
+                        ch = baseReader->peek();
+                        cch = static_cast<wchar_t>(ch);
+                        if (ch >= L'0' && ch <= L'9')
+                        {
+                            baseReader->read();
+                            sb->append(cch);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
 
-				delete sb;
-				continue;
+                //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                rst.push_back(token(token_kind::Number, sb->toString()));
 
-				delete sb;
-			}
-			else
-			{
-				switch (ch)
-				{
-					case L'+':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Plus, L""));
-						break;
-					case L'-':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Sub, L""));
-						break;
-					case L'*':
-						if (baseReader->Peek() == L'*')
-						{
-							baseReader->Read();
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::Pow, L""));
-						}
-						else
-						{
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::Mul, L""));
-						}
-						break;
-					case L'/':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Div, L""));
-						break;
-					case L'%':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Mod, L""));
-						break;
-					case L'(':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::LParen, L""));
-						break;
-					case L')':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::RParen, L""));
-						break;
-					case L'?':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Question, L""));
-						break;
-					case L':':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Colon, L""));
-						break;
-					case L',':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Comma, L""));
-						break;
-					case L'^':
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-						rst.push_back(Token(TokenKind::Pow, L""));
-						break;
-					case L'>':
-						if (baseReader->Peek() == L'=')
-						{
-							baseReader->Read();
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::GtrEq, L""));
-						}
-						if (baseReader->Peek() == L'<')
-						{
-							baseReader->Read();
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::NoEq, L""));
-						}
-						else
-						{
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::Gtr, L""));
-						}
-						break;
-					case L'<':
-						if (baseReader->Peek() == L'=')
-						{
-							baseReader->Read();
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::LssEq, L""));
-						}
-						if (baseReader->Peek() == L'>')
-						{
-							baseReader->Read();
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::NoEq, L""));
-						}
-						else
-						{
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::Lss, L""));
-						}
-						break;
-					case L'=':
-						if (baseReader->Peek() == L'=')
-						{
-							baseReader->Read();
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::Eq, L""));
-						}
-						else
-						{
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-							rst.push_back(Token(TokenKind::Eq, L""));
-						}
-						break;
-				}
-			}
-		}
-	}
+                delete sb;
+                continue;
+
+                delete sb;
+            }
+            else
+            {
+                switch (ch)
+                {
+                    case L'+':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Plus, L""));
+                        break;
+                    case L'-':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Sub, L""));
+                        break;
+                    case L'*':
+                        if (baseReader->peek() == L'*')
+                        {
+                            baseReader->read();
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::Pow, L""));
+                        }
+                        else
+                        {
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::Mul, L""));
+                        }
+                        break;
+                    case L'/':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Div, L""));
+                        break;
+                    case L'%':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Mod, L""));
+                        break;
+                    case L'(':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::LParen, L""));
+                        break;
+                    case L')':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::RParen, L""));
+                        break;
+                    case L'?':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Question, L""));
+                        break;
+                    case L':':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Colon, L""));
+                        break;
+                    case L',':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Comma, L""));
+                        break;
+                    case L'^':
+                        //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                        rst.push_back(token(token_kind::Pow, L""));
+                        break;
+                    case L'>':
+                        if (baseReader->peek() == L'=')
+                        {
+                            baseReader->read();
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::GtrEq, L""));
+                        }
+                        if (baseReader->peek() == L'<')
+                        {
+                            baseReader->read();
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::NoEq, L""));
+                        }
+                        else
+                        {
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::Gtr, L""));
+                        }
+                        break;
+                    case L'<':
+                        if (baseReader->peek() == L'=')
+                        {
+                            baseReader->read();
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::LssEq, L""));
+                        }
+                        if (baseReader->peek() == L'>')
+                        {
+                            baseReader->read();
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::NoEq, L""));
+                        }
+                        else
+                        {
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::Lss, L""));
+                        }
+                        break;
+                    case L'=':
+                        if (baseReader->peek() == L'=')
+                        {
+                            baseReader->read();
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::Eq, L""));
+                        }
+                        else
+                        {
+                            //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
+                            rst.push_back(token(token_kind::Eq, L""));
+                        }
+                        break;
+                }
+            }
+        }
+    }
 }

@@ -17,21 +17,21 @@ namespace NCalculatorLibExprs
 	/// | fun_expr
 	/// | quote_expr
 	/// </summary>
-	class UnitExpr : public Expr
+	class UnitExpr : public expr
 	{
 	public:
 		const bool Signed;
-		Expr *const Value;
+		expr *const Value;
 
 		virtual ~UnitExpr()
 		{
 			delete Value;
 		}
 
-		UnitExpr(Expr *value, bool signed_Keyword);
+		UnitExpr(expr *value, bool signed_Keyword);
 
-		std::vector<Token> EnumTokens() override;
+		std::vector<token> enum_tokens() override;
 
-		double Eval() override;
+		double eval() override;
 	};
 }

@@ -6,18 +6,18 @@ using namespace NCalculator;
 namespace NCalculatorLibExprs
 {
 
-	FunExpr::FunExpr(Token func, ExprSeqExpr *param) : Func(func), Params(param)
+	FunExpr::FunExpr(token func, expr_seq_expr *param) : Func(func), Params(param)
 	{
 	}
 
-	std::vector<Token> FunExpr::EnumTokens()
+	std::vector<token> FunExpr::enum_tokens()
 	{
 //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
 		yield return Func;
 //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
 		yield return Token(TokenKind::LParen, L"");
 
-		for (auto token : *Params->EnumTokens())
+		for (auto token : *Params->enum_tokens())
 		{
 //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
 			yield return token;
@@ -27,7 +27,7 @@ namespace NCalculatorLibExprs
 		yield return Token(TokenKind::RParen, L"");
 	}
 
-	double FunExpr::Eval()
+	double FunExpr::eval()
 	{
 //C# TO C++ CONVERTER WARNING: Nullable reference types have no equivalent in C++:
 //ORIGINAL LINE: Func<double[], double>? func;
@@ -42,7 +42,7 @@ namespace NCalculatorLibExprs
 			func = NCalc::Functions_iterator->second;
 			return func->Invoke(Params->SeqValue.Select([&] (std::any expr)
 			{
-				expr::Eval();
+				expr::eval();
 			})->ToArray());
 		}
 		else

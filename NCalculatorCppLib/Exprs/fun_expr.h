@@ -16,21 +16,21 @@ namespace NCalculatorLibExprs
 	/// <summary>
 	/// id quote_expr
 	/// </summary>
-	class FunExpr : public Expr
+	class FunExpr : public expr
 	{
 	public:
-		const Token Func;
-		ExprSeqExpr *const Params;
+		const token Func;
+		expr_seq_expr *const Params;
 
 		virtual ~FunExpr()
 		{
 			delete Params;
 		}
 
-		FunExpr(Token func, ExprSeqExpr *param);
+		FunExpr(token func, expr_seq_expr *param);
 
-		std::vector<Token> EnumTokens() override;
+		std::vector<token> enum_tokens() override;
 
-		double Eval() override;
+		double eval() override;
 	};
 }

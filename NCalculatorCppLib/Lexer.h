@@ -4,27 +4,29 @@
 #include <vector>
 #include <cctype>
 #include "stringbuilder.h"
+#include "wstring_reader.h"
 
 using namespace NCalculator;
 
 namespace NCalculatorLib
 {
-	class Lexer
-	{
-	private:
-		TextReader *const baseReader;
+    class lexer
+    {
+        private:
+        wstring_reader* baseReader;
 
-	public:
-		virtual ~Lexer()
-		{
-			delete baseReader;
-		}
+        public:
+        virtual ~lexer()
+        {
 
-		TextReader *getBaseReader() const;
-//C# TO C++ CONVERTER TODO TASK: Throw expressions are not converted by C# to C++ Converter:
-//ORIGINAL LINE: public Lexer(TextReader tr)
-		Lexer(TextReader *tr);
+        }
 
-		std::vector<Token> Lex();
-	};
+        wstring_reader* getBaseReader() const;
+        lexer();
+        //C# TO C++ CONVERTER TODO TASK: Throw expressions are not converted by C# to C++ Converter:
+        //ORIGINAL LINE: public Lexer(TextReader tr)
+        lexer(wstring_reader* const tr);
+
+        std::vector<token> Lex();
+    };
 }

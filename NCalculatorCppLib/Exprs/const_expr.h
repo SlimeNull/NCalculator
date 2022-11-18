@@ -12,16 +12,16 @@ using namespace NCalculator;
 
 namespace NCalculatorLibExprs
 {
-	class ConstExpr : public Expr
+	class const_expr : public expr
 	{
 	public:
 		const std::wstring Name;
-		ConstExpr(const std::wstring &name);
+		const_expr(const std::wstring &name);
 
 		static double GetConst(const std::wstring &name);
 
-		std::vector<Token> EnumTokens() override;
+		std::vector<token> enum_tokens() override;
 
-		double Eval() override;
+		double eval() override;
 	};
 }

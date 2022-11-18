@@ -5,26 +5,26 @@ using namespace NCalculator;
 namespace NCalculatorLibExprs
 {
 
-	RelExpr::RelExpr(Token opt, Expr *leftExpr, Expr *rightExpr) : Operator(opt), LeftExpr(leftExpr), RightExpr(rightExpr)
+	RelExpr::RelExpr(token opt, expr *leftExpr, expr *rightExpr) : Operator(opt), LeftExpr(leftExpr), RightExpr(rightExpr)
 	{
 	}
 
-	double RelExpr::Eval()
+	double RelExpr::eval()
 	{
 		int tempVar5;
 		switch (Operator.Kind)
 		{
-			case TokenKind::Gtr:
-				tempVar5 = LeftExpr->Eval() > RightExpr->Eval() ? 1 : 0;
+			case token_kind::Gtr:
+				tempVar5 = LeftExpr->eval() > RightExpr->eval() ? 1 : 0;
 				break;
-			case TokenKind::Lss:
-				tempVar5 = LeftExpr->Eval() < RightExpr->Eval() ? 1 : 0;
+			case token_kind::Lss:
+				tempVar5 = LeftExpr->eval() < RightExpr->eval() ? 1 : 0;
 				break;
-			case TokenKind::GtrEq:
-				tempVar5 = LeftExpr->Eval() >= RightExpr->Eval() ? 1 : 0;
+			case token_kind::GtrEq:
+				tempVar5 = LeftExpr->eval() >= RightExpr->eval() ? 1 : 0;
 				break;
-			case TokenKind::LssEq:
-				tempVar5 = LeftExpr->Eval() <= RightExpr->Eval() ? 1 : 0;
+			case token_kind::LssEq:
+				tempVar5 = LeftExpr->eval() <= RightExpr->eval() ? 1 : 0;
 				break;
 			default:
 //C# TO C++ CONVERTER TODO TASK: Throw expressions are not converted by C# to C++ Converter:
@@ -35,9 +35,9 @@ namespace NCalculatorLibExprs
 		return tempVar5;
 	}
 
-	std::vector<Token> RelExpr::EnumTokens()
+	std::vector<token> RelExpr::enum_tokens()
 	{
-		for (auto token : *LeftExpr->EnumTokens())
+		for (auto token : *LeftExpr->enum_tokens())
 		{
 //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
 			yield return token;
@@ -46,7 +46,7 @@ namespace NCalculatorLibExprs
 //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
 		yield return Operator;
 
-		for (auto token : *RightExpr->EnumTokens())
+		for (auto token : *RightExpr->enum_tokens())
 		{
 //C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
 			yield return token;

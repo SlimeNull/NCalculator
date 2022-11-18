@@ -6,17 +6,16 @@
 
 
 
-using namespace NCalculatorLib;
 using namespace NCalculator;
 
 namespace NCalculatorLibExprs
 {
-	class Expr
+	class expr
 	{
 	public:
-		virtual double Eval() = 0;
-		virtual std::vector<Token> EnumTokens() = 0;
+		virtual double eval() = 0;
+		virtual std::vector<token> enum_tokens() = 0;
 
-		std::wstring ToString();
+		std::wstring to_string();
 	};
 }

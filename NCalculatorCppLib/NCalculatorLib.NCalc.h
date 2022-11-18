@@ -14,15 +14,15 @@ using namespace NCalculatorLibExprs;
 
 namespace NCalculatorLib
 {
-	class NCalc final
+	class ncalc final
 	{
 	private:
 		static std::unordered_map<std::wstring, double> DefaultConstants;
-		static std::unordered_map<std::wstring, std::function<double()>*> DefaultVariables;
-		static std::unordered_map<std::wstring, std::function<double(std::vector<double>)>*> DefaultFunctions;
+		static std::unordered_map<std::wstring, std::function<double()>> DefaultVariables;
+		static std::unordered_map<std::wstring, std::function<double(const std::vector<double>&)>> DefaultFunctions;
 		static std::unordered_map<std::wstring, double> Constants;
-		static std::unordered_map<std::wstring, std::function<double()>*> Variables;
-		static std::unordered_map<std::wstring, std::function<double(std::vector<double>)>*> Functions;
+		static std::unordered_map<std::wstring, std::function<double()>> Variables;
+		static std::unordered_map<std::wstring, std::function<double(const std::vector<double>&)>> Functions;
 
 	private:
 		class StaticConstructor
@@ -32,111 +32,109 @@ namespace NCalculatorLib
 		};
 
 	private:
-		static NCalc::StaticConstructor staticConstructor;
+		static ncalc::StaticConstructor staticConstructor;
 
 
 	public:
 		static std::unordered_map<std::wstring, double> getDefaultConstants();
-		static std::unordered_map<std::wstring, std::function<double()>*> getDefaultVariables();
-		static std::unordered_map<std::wstring, std::function<double(const std::vector<double>&)>*> getDefaultFunctions();
+		static std::unordered_map<std::wstring, std::function<double()>> getDefaultVariables();
+		static std::unordered_map<std::wstring, std::function<double(const std::vector<double>&)>> getDefaultFunctions();
 
 		static std::unordered_map<std::wstring, double> getConstants();
-		static std::unordered_map<std::wstring, std::function<double()>*> getVariables();
-		static std::unordered_map<std::wstring, std::function<double(const std::vector<double>&)>*> getFunctions();
+		static std::unordered_map<std::wstring, std::function<double()>> getVariables();
+		static std::unordered_map<std::wstring, std::function<double(const std::vector<double>&)>> getFunctions();
 
-		static double Go(const std::wstring &expr);
-
-		static double Go(Stream *exprStream);
+		static double go(const std::wstring &expr);
 
 
 	private:
-		class FunctionDefinition final
+		class func_def final
 		{
 
 		public:
-			static double Abs(std::vector<double> &args);
+			static double abs(const std::vector<double> &args);
 
 
-			static double Ceil(std::vector<double> &args);
+			static double ceil(const std::vector<double> &args);
 
 
-			static double Floor(std::vector<double> &args);
+			static double floor(const std::vector<double> &args);
 
 
-			static double Min(std::vector<double> &args);
+			static double min(const std::vector<double> &args);
 
 
-			static double Max(std::vector<double> &args);
+			static double max(const std::vector<double> &args);
 
-			static double Sum(std::vector<double> &args);
-
-
-			static double Ln(std::vector<double> &args);
+			static double sum(const std::vector<double> &args);
 
 
-			static double Log(std::vector<double> &args);
+			static double ln(const std::vector<double> &args);
 
 
-			static double Log10(std::vector<double> &args);
+			static double log(const std::vector<double> &args);
 
 
-			static double Pow(std::vector<double> &args);
+			static double log10(const std::vector<double> &args);
 
 
-			static double Sqrt(std::vector<double> &args);
+			static double pow(const std::vector<double> &args);
 
 
-			static double Exp(std::vector<double> &args);
+			static double sqrt(const std::vector<double> &args);
 
 
-			static double Cbrt(std::vector<double> &args);
+			static double exp(const std::vector<double> &args);
 
 
-			static double Sin(std::vector<double> &args);
+			static double cbrt(const std::vector<double> &args);
 
 
-			static double Cos(std::vector<double> &args);
+			static double sin(const std::vector<double> &args);
 
 
-			static double Tan(std::vector<double> &args);
+			static double cos(const std::vector<double> &args);
 
 
-			static double Asin(std::vector<double> &args);
+			static double tan(const std::vector<double> &args);
 
 
-			static double Acos(std::vector<double> &args);
+			static double asin(const std::vector<double> &args);
 
 
-			static double Atan(std::vector<double> &args);
+			static double acos(const std::vector<double> &args);
 
 
-			static double Sinh(std::vector<double> &args);
+			static double atan(const std::vector<double> &args);
 
 
-			static double Cosh(std::vector<double> &args);
+			static double sinh(const std::vector<double> &args);
 
 
-			static double Tanh(std::vector<double> &args);
+			static double cosh(const std::vector<double> &args);
 
 
-			static double Asinh(std::vector<double> &args);
+			static double tanh(const std::vector<double> &args);
 
 
-			static double Acosh(std::vector<double> &args);
+			static double asinh(const std::vector<double> &args);
 
 
-			static double Atanh(std::vector<double> &args);
+			static double acosh(const std::vector<double> &args);
 
 
-			static double Round(std::vector<double> &args);
+			static double atanh(const std::vector<double> &args);
 
 
-			static double Sign(std::vector<double> &args);
+			static double round(const std::vector<double> &args);
 
 
-			static double Truncate(std::vector<double> &args);
+			static double sign(const std::vector<double> &args);
 
-			static double Fact(std::vector<double> &args);
+
+			static double truncate(const std::vector<double> &args);
+
+			static double fact(const std::vector<double> &args);
 		};
 	};
 }

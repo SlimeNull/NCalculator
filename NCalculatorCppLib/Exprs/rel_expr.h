@@ -10,7 +10,7 @@ using namespace NCalculator;
 
 namespace NCalculatorLibExprs
 {
-	class RelExpr : public Expr
+	class RelExpr : public expr
 	{
 	public:
 		virtual ~RelExpr()
@@ -19,14 +19,14 @@ namespace NCalculatorLibExprs
 			delete RightExpr;
 		}
 
-		RelExpr(Token opt, Expr *leftExpr, Expr *rightExpr);
+		RelExpr(token opt, expr *leftExpr, expr *rightExpr);
 
-		const Token Operator;
-		Expr *const LeftExpr;
-		Expr *const RightExpr;
+		const token Operator;
+		expr *const LeftExpr;
+		expr *const RightExpr;
 
-		double Eval() override;
+		double eval() override;
 
-		std::vector<Token> EnumTokens() override;
+		std::vector<token> enum_tokens() override;
 	};
 }

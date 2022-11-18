@@ -9,14 +9,14 @@ namespace NCalculatorLibExprs
 	{
 	}
 
-	std::vector<Token> NumExpr::EnumTokens()
+	std::vector<token> NumExpr::enum_tokens()
 	{
-		std::vector<Token> rst = std::vector<Token>();
-		rst.push_back(Token(TokenKind::Number, Value));
+		std::vector<token> rst = std::vector<token>();
+		rst.push_back(token(token_kind::Number, Value));
 		return  rst;
 	}
 
-	double NumExpr::Eval()
+	double NumExpr::eval()
 	{
 		return std::stod(Value);
 	}

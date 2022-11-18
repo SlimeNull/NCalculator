@@ -16,15 +16,15 @@ namespace NCalculatorLibExprs
 	/// 
 	/// | num_literal
 	/// </summary>
-	class NumExpr : public Expr
+	class NumExpr : public expr
 	{
 	public:
 		const std::wstring Value;
 
 		NumExpr(const std::wstring &value);
 
-		std::vector<Token> EnumTokens() override;
+		std::vector<token> enum_tokens() override;
 
-		double Eval() override;
+		double eval() override;
 	};
 }

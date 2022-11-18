@@ -5,27 +5,28 @@ using namespace NCalculator;
 namespace NCalculatorLibExprs
 {
 
-	UnitExpr::UnitExpr(Expr *value, bool signed_Keyword) : Signed(signed_Keyword), Value(value)
+	UnitExpr::UnitExpr(expr *value, bool signed_Keyword) : Signed(signed_Keyword), Value(value)
 	{
 	}
 
-	std::vector<Token> UnitExpr::EnumTokens()
+	std::vector<token> UnitExpr::enum_tokens()
 	{
+		std::vector<token> vec = std::vector<token>();
 		if (Signed)
 		{
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-			yield return Token(TokenKind::Sub, L"");
+			vec.push_back(token(token_kind::Sub, L""));
 		}
 
-		for (auto token : *Value->EnumTokens())
+		for (auto token : Value->enum_tokens())
 		{
-//C# TO C++ CONVERTER TODO TASK: C++ does not have an equivalent to the C# 'yield' keyword:
-			yield return token;
+			vec.push_back(token);
 		}
+
+		return vec;
 	}
 
-	double UnitExpr::Eval()
+	double UnitExpr::eval()
 	{
-		return Signed ? -Value->Eval() : Value->Eval();
+		return Signed ? -Value->eval() : Value->eval();
 	}
 }

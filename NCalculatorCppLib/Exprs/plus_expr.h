@@ -19,11 +19,11 @@ namespace NCalculatorLibExprs
 	/// | unit + | - mul
 	/// | unit - | - unit
 	/// </summary>
-	class PlusExpr : public BinExpr
+	class PlusExpr : public bin_expr
 	{
 	public:
-		PlusExpr(Token op, Expr *left, Expr *right);
+		PlusExpr(token op, expr *left, expr *right);
 
-		double Eval() override;
+		double eval() override;
 	};
 }

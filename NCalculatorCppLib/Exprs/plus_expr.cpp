@@ -5,11 +5,11 @@ using namespace NCalculator;
 namespace NCalculatorLibExprs
 {
 
-	PlusExpr::PlusExpr(Token op, Expr *left, Expr *right) : BinExpr(op, left, right)
+	PlusExpr::PlusExpr(token op, expr *left, expr *right) : bin_expr(op, left, right)
 	{
 	}
 
-	double PlusExpr::Eval()
+	double PlusExpr::eval()
 	{
 	//C# TO C++ CONVERTER TODO TASK: The following 'switch expression' was not converted by C# to C++ Converter:
 	//			return Operator.Kind switch

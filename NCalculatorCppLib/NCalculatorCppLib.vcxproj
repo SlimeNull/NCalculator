@@ -127,45 +127,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Exprs\BinExpr.cpp" />
-    <ClCompile Include="Exprs\CondExpr.cpp" />
-    <ClCompile Include="Exprs\ConstExpr.cpp" />
-    <ClCompile Include="Exprs\EqExpr.cpp" />
-    <ClCompile Include="Exprs\Expr.cpp" />
-    <ClCompile Include="Exprs\ExprSeqExpr.cpp" />
-    <ClCompile Include="Exprs\FunExpr.cpp" />
-    <ClCompile Include="Exprs\MulExpr.cpp" />
-    <ClCompile Include="Exprs\NumExpr.cpp" />
-    <ClCompile Include="Exprs\PlusExpr.cpp" />
-    <ClCompile Include="Exprs\RelExpr.cpp" />
-    <ClCompile Include="Exprs\UnitExpr.cpp" />
+    <ClCompile Include="Exprs\bin_expr.cpp" />
+    <ClCompile Include="Exprs\cond_expr.cpp" />
+    <ClCompile Include="Exprs\const_expr.cpp" />
+    <ClCompile Include="Exprs\eq_expr.cpp" />
+    <ClCompile Include="Exprs\expr.cpp" />
+    <ClCompile Include="Exprs\expr_seq_expr.cpp" />
+    <ClCompile Include="Exprs\fun_expr.cpp" />
+    <ClCompile Include="Exprs\mul_expr.cpp" />
+    <ClCompile Include="Exprs\num_expr.cpp" />
+    <ClCompile Include="Exprs\plus_expr.cpp" />
+    <ClCompile Include="Exprs\rel_expr.cpp" />
+    <ClCompile Include="Exprs\unit_expr.cpp" />
     <ClCompile Include="Lexer.cpp" />
-    <ClCompile Include="NCalculatorCppLib.cpp" />
     <ClCompile Include="NCalculatorLib.NCalc.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Token.cpp" />
+    <ClCompile Include="wstring_reader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bankersrounding.h" />
     <ClInclude Include="exceptionhelper.h" />
-    <ClInclude Include="Exprs\BinExpr.h" />
-    <ClInclude Include="Exprs\CondExpr.h" />
-    <ClInclude Include="Exprs\ConstExpr.h" />
-    <ClInclude Include="Exprs\EqExpr.h" />
-    <ClInclude Include="Exprs\Expr.h" />
-    <ClInclude Include="Exprs\ExprSeqExpr.h" />
-    <ClInclude Include="Exprs\FunExpr.h" />
-    <ClInclude Include="Exprs\MulExpr.h" />
-    <ClInclude Include="Exprs\NumExpr.h" />
-    <ClInclude Include="Exprs\PlusExpr.h" />
-    <ClInclude Include="Exprs\RelExpr.h" />
-    <ClInclude Include="Exprs\UnitExpr.h" />
+    <ClInclude Include="Exprs\bin_expr.h" />
+    <ClInclude Include="Exprs\cond_expr.h" />
+    <ClInclude Include="Exprs\const_expr.h" />
+    <ClInclude Include="Exprs\eq_expr.h" />
+    <ClInclude Include="Exprs\expr.h" />
+    <ClInclude Include="Exprs\expr_seq_expr.h" />
+    <ClInclude Include="Exprs\fun_expr.h" />
+    <ClInclude Include="Exprs\mul_expr.h" />
+    <ClInclude Include="Exprs\num_expr.h" />
+    <ClInclude Include="Exprs\plus_expr.h" />
+    <ClInclude Include="Exprs\rel_expr.h" />
+    <ClInclude Include="Exprs\unit_expr.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="NCalculatorLib.NCalc.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="stringbuilder.h" />
     <ClInclude Include="stringhelper.h" />
     <ClInclude Include="Token.h" />
+    <ClInclude Include="wstring_reader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

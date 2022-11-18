@@ -6,8 +6,8 @@ using namespace NCalculator;
 namespace NCalculatorLibExprs
 {
 
-	std::wstring Expr::ToString()
+	std::wstring expr::to_string()
 	{
-		return std::wstring::Join(L' ', EnumTokens());
+		return std::wstring::Join(L' ', enum_tokens());
 	}
 }
