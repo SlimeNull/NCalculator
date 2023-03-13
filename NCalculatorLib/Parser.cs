@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NCalculatorLib.Exprs;
 using Null.Calculator;
@@ -18,7 +19,7 @@ namespace NCalculatorLib
             Tokens = tokens;
         }
 
-        public bool MatchExprSeqExpr(ref int index, out ExprSeqExpr? rst)
+        public bool MatchExprSeqExpr(ref int index, [NotNullWhen(true)] out ExprSeqExpr? rst)
         {
             rst = null;
             int tempindex1 = index;
@@ -46,7 +47,7 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchExpr(ref int index, out Expr? rst)
+        public bool MatchExpr(ref int index, [NotNullWhen(true)] out Expr? rst)
         {
             if (MatchLogicExpr(ref index, out var logicExpr))
             {
@@ -63,7 +64,7 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchMathExpr(ref int index, out Expr? rst)
+        public bool MatchMathExpr(ref int index, [NotNullWhen(true)] out Expr? rst)
         {
             if (MatchPlusExpr(ref index, out var plusExpr))
             {
@@ -99,29 +100,25 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchLogicExpr(ref int index, out Expr? rst)
+        public bool MatchLogicExpr(ref int index, [NotNullWhen(true)] out Expr? rst)
         {
-            if (MatchCondExpr(ref index, out var condExpr))
-            {
-                rst = condExpr;
-                return true;
-            }
-            else if (MatchEqExpr(ref index, out var eqExpr))
-            {
-                rst = eqExpr;
-                return true;
-            }
-            else if (MatchRelExpr(ref index, out var relExpr))
-            {
-                rst = relExpr;
-                return true;
-            }
-
             rst = null;
-            return false;
+
+            int tmpindex = index;
+            if (MatchCondExpr(ref tmpindex, out var condExpr))
+                rst = condExpr;
+            else if (MatchEqExpr(ref tmpindex, out var eqExpr))
+                rst = eqExpr;
+            else if (MatchRelExpr(ref tmpindex, out var relExpr))
+                rst = relExpr;
+            else
+                return false;
+
+            index = tmpindex;
+            return true;
         }
 
-        public bool MatchCondExpr(ref int index, out CondExpr? rst)
+        public bool MatchCondExpr(ref int index, [NotNullWhen(true)] out CondExpr? rst)
         {
             rst = null;
             int tempindex1 = index;
@@ -208,7 +205,7 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchEqExpr(ref int index, out EqExpr? rst)
+        public bool MatchEqExpr(ref int index, [NotNullWhen(true)] out EqExpr? rst)
         {
             rst = null;
             int tempindex1 = index;
@@ -240,7 +237,7 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchRelExpr(ref int index, out RelExpr? rst)
+        public bool MatchRelExpr(ref int index, [NotNullWhen(true)] out RelExpr? rst)
         {
             rst = null;
             int tempindex1 = index;
@@ -320,7 +317,7 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchQuoteExpr(ref int index, out Expr? rst)
+        public bool MatchQuoteExpr(ref int index, [NotNullWhen(true)] out Expr? rst)
         {
             rst = null;
             if (index >= Tokens.Length)
@@ -346,114 +343,100 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchPlusExpr(ref int index, out PlusExpr? rst)
+        public bool MatchPlusExpr(ref int index, [NotNullWhen(true)] out PlusExpr? rst)
         {
             rst = null;
-            int tempindex1 = index;
-            if (MatchMulExpr(ref tempindex1, out var mulExpr))
+            int tmpindex = index;
+
+            Expr? left;
+            if (MatchMulExpr(ref tmpindex, out var mulExpr))
+                left = mulExpr;
+            else if (MatchUnitExpr(ref tmpindex, out var unitExpr))
+                left = unitExpr;
+            else
+                return false;
+
+            if (MatchPlusTailExpr(ref tmpindex, out PlusTailExpr? tailExpr))
             {
-                if (tempindex1 >= Tokens.Length)
-                    return false;
-
-                var optToken = Tokens[tempindex1];
-                if (optToken.Kind != TokenKind.Plus &&
-                    optToken.Kind != TokenKind.Sub)
-                    return false;
-
-                int tempindex2 = tempindex1 + 1;
-                if (MatchPlusExpr(ref tempindex2, out var plusExpr))
-                {
-                    rst = new PlusExpr(optToken, mulExpr!, plusExpr!);
-                    index = tempindex2;
-                    return true;
-                }
-                else if (MatchMulExpr(ref tempindex2, out var mulExpr2))
-                {
-                    rst = new PlusExpr(optToken, mulExpr!, mulExpr2!);
-                    index = tempindex2;
-                    return true;
-                }
-            }
-            else if (MatchUnitExpr(ref tempindex1, out var unitExpr))
-            {
-                if (tempindex1 >= Tokens.Length)
-                    return false;
-
-                Token optToken = Tokens[tempindex1];
-                if (optToken.Kind != TokenKind.Plus &&
-                    optToken.Kind != TokenKind.Sub)
-                    return false;
-
-                int tempindex2 = tempindex1 + 1;
-                if (MatchPlusExpr(ref tempindex2, out var plusExpr))
-                {
-                    rst = new PlusExpr(plusExpr!.Operator,
-                        new PlusExpr(optToken, unitExpr!, plusExpr!.LeftExpr)!,
-                        plusExpr.RightExpr!);
-                    rst = BinExpr.SpinExpr(rst);
-
-                    index = tempindex2;
-                    return true;
-                }
-                else if (MatchMulExpr(ref tempindex2, out var mulExpr2))
-                {
-                    rst = new PlusExpr(optToken, unitExpr!, mulExpr2!);
-                    index = tempindex2;
-                    return true;
-                }
-                else if (MatchUnitExpr(ref tempindex2, out var unitExpr2))
-                {
-                    rst = new PlusExpr(optToken, unitExpr!, unitExpr2!);
-                    index = tempindex2;
-                    return true;
-                }
+                index = tmpindex;
+                rst = new PlusExpr(left, tailExpr);
+                return true;
             }
 
             return false;
         }
 
-        public bool MatchMulExpr(ref int index, out MulExpr? rst)
+        public bool MatchPlusTailExpr(ref int index, [NotNullWhen(true)] out PlusTailExpr? rst)
         {
             rst = null;
-            int tempindex1 = index;
+            int tmpindex = index;
+            if (tmpindex >= Tokens.Length)
+                return false;
 
-            // 匹配左侧是否是计算单元
-            if (MatchUnitExpr(ref tempindex1, out var unitExpr))
+            Token optToken = Tokens[tmpindex];
+            if (optToken.Kind != TokenKind.Plus &&
+                optToken.Kind != TokenKind.Sub)
+                return false;
+
+            tmpindex++;
+
+            Expr? rightExpr;
+            if (MatchMulExpr(ref tmpindex, out MulExpr? mulExpr))
+                rightExpr = mulExpr;
+            else if (MatchUnitExpr(ref tmpindex, out UnitExpr? unitExpr))
+                rightExpr = unitExpr;
+            else
+                return false;
+
+            MatchPlusTailExpr(ref tmpindex, out PlusTailExpr? tailExpr);
+
+            index = tmpindex;
+            rst = new PlusTailExpr(optToken, rightExpr, tailExpr);
+            return true;
+        }
+
+        public bool MatchMulExpr(ref int index, [NotNullWhen(true)] out MulExpr? rst)
+        {
+            int tmpindex = index;
+            if (MatchUnitExpr(ref tmpindex, out UnitExpr? unitExpr) &&
+                MatchMulTailExpr(ref tmpindex, out MulTailExpr? tailExpr))
             {
-                if (tempindex1 >= Tokens.Length)
-                    return false;
-
-                // 匹配是否是乘法符号 * / ^
-                Token optToken = Tokens[tempindex1];
-                if (optToken.Kind != TokenKind.Mul &&
-                    optToken.Kind != TokenKind.Div &&
-                    optToken.Kind != TokenKind.Pow &&
-                    optToken.Kind != TokenKind.Mod)
-                    return false;
-
-                int tempindex2 = tempindex1 + 1;
-                if (MatchMulExpr(ref tempindex2, out var mulExpr))
-                {
-                    rst = new MulExpr(mulExpr!.Operator,
-                              new MulExpr(optToken, unitExpr!, mulExpr!.LeftExpr),
-                              mulExpr.RightExpr!);
-                    rst = BinExpr.SpinExpr(rst);
-
-                    index = tempindex2;
-                    return true;
-                }
-                else if (MatchUnitExpr(ref tempindex2, out var unitExpr2))
-                {
-                    rst = new MulExpr(optToken, unitExpr!, unitExpr2!);
-                    index = tempindex2;
-                    return true;
-                }
+                index = tmpindex;
+                rst = new MulExpr(unitExpr, tailExpr);
+                return true;
             }
 
+            rst = null;
             return false;
         }
 
-        public bool MatchUnitExpr(ref int index, out UnitExpr? rst)
+        public bool MatchMulTailExpr(ref int index, [NotNullWhen(true)] out MulTailExpr? rst)
+        {
+            rst = null;
+            int tmpindex = index;
+
+            if (tmpindex >= Tokens.Length)
+                return false;
+
+            Token optToken = Tokens[tmpindex];
+            if (optToken.Kind != TokenKind.Mul &&
+                optToken.Kind != TokenKind.Div &&
+                optToken.Kind != TokenKind.Mod &&
+                optToken.Kind != TokenKind.Pow)
+                return false;
+
+            tmpindex++;
+            if (!MatchUnitExpr(ref tmpindex, out UnitExpr? unitExpr))
+                return false;
+
+            MatchMulTailExpr(ref tmpindex, out MulTailExpr? tailExpr);
+
+            index = tmpindex;
+            rst = new MulTailExpr(optToken, unitExpr, tailExpr);
+            return true;
+        }
+
+        public bool MatchUnitExpr(ref int index, [NotNullWhen(true)] out UnitExpr? rst)
         {
             rst = null;
             bool signed;
@@ -494,7 +477,7 @@ namespace NCalculatorLib
             return false;
         }
 
-        public bool MatchNumExpr(ref int index, out NumExpr? rst)
+        public bool MatchNumExpr(ref int index, [NotNullWhen(true)] out NumExpr? rst)
         {
             rst = null;
             if (index >= Tokens.Length)

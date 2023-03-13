@@ -1,31 +1,18 @@
-﻿using Null.Calculator;
-
-#nullable enable
+﻿#nullable enable
 
 namespace NCalculatorLib.Exprs
 {
     /// <summary>
-    /// add expression
+    /// add expression :
     /// 
-    /// | mul + | - plus
-    /// | mul + | - mul
-    /// | unit + | - plus
-    /// | unit + | - mul
-    /// | unit - | - unit
+    /// <para>| mul plus_tail</para>
+    /// <para>| unit plus_tail</para>
     /// </summary>
     public class PlusExpr : BinExpr
     {
-        public PlusExpr(Token op, Expr left, Expr right) : base(op, left, right)
-        { }
-
-        public override double Eval()
+        public PlusExpr(Expr left, PlusTailExpr tail) : base(left, tail)
         {
-            return Operator.Kind switch
-            {
-                TokenKind.Plus => LeftExpr.Eval() + RightExpr.Eval(),
-                TokenKind.Sub => LeftExpr.Eval() - RightExpr.Eval(),
-                _ => throw new Exception("Invalid operator")
-            };
+
         }
     }
 }

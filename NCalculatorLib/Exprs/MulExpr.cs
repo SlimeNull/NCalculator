@@ -1,30 +1,17 @@
-﻿using Null.Calculator;
-
-#nullable enable
+﻿#nullable enable
 
 namespace NCalculatorLib.Exprs
 {
     /// <summary>
-    /// multiply expression
+    /// multiply expression :
     /// 
-    /// | unit * | / | % | ^ mul_expr
-    /// | unit * | / | % | ^ unit
+    /// <para>| unit mul_tail</para>
     /// </summary>
     public class MulExpr : BinExpr
     {
-        public MulExpr(Token op, Expr left, Expr right) : base(op, left, right)
-        { }
-
-        public override double Eval()
+        public MulExpr(Expr left, MulTailExpr right) : base(left, right)
         {
-            return Operator.Kind switch
-            {
-                TokenKind.Mul => LeftExpr.Eval() * RightExpr.Eval(),
-                TokenKind.Div => LeftExpr.Eval() / RightExpr.Eval(),
-                TokenKind.Mod => LeftExpr.Eval() % RightExpr.Eval(),
-                TokenKind.Pow => Math.Pow(LeftExpr.Eval(), RightExpr.Eval()),
-                _ => throw new Exception("Invalid operator")
-            };
+
         }
     }
 }
