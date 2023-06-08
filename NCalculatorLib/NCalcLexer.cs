@@ -1,5 +1,4 @@
-﻿using Null.Calculator;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace NCalculatorLib
 {
-    public class Lexer
+    public class NCalcLexer
     {
         private readonly TextReader baseReader;
 
         public TextReader BaseReader => baseReader;
-        public Lexer(TextReader tr)
+        public NCalcLexer(TextReader tr)
         {
             baseReader = tr ?? throw new ArgumentNullException(nameof(tr));
         }
 
-        public IEnumerable<Token> Lex()
+        public IEnumerable<NCalcToken> Lex()
         {
             while (true)
             {
@@ -51,7 +50,7 @@ namespace NCalculatorLib
                         }
                     }
 
-                    yield return new Token(TokenKind.Identifier, sb.ToString());
+                    yield return new NCalcToken(NCalcTokenKind.Identifier, sb.ToString());
                     continue;
                 }
                 else if (char.IsDigit(cch))
@@ -122,7 +121,7 @@ namespace NCalculatorLib
                         }
                     }
 
-                    yield return new Token(TokenKind.Number, sb.ToString());
+                    yield return new NCalcToken(NCalcTokenKind.Number, sb.ToString());
                     continue;
                 }
                 else
@@ -130,87 +129,87 @@ namespace NCalculatorLib
                     switch (ch)
                     {
                         case '+':
-                            yield return new Token(TokenKind.Plus, null);
+                            yield return new NCalcToken(NCalcTokenKind.Plus, null);
                             break;
                         case '-':
-                            yield return new Token(TokenKind.Sub, null);
+                            yield return new NCalcToken(NCalcTokenKind.Sub, null);
                             break;
                         case '*':
                             if (baseReader.Peek() == '*')
                             {
                                 baseReader.Read();
-                                yield return new Token(TokenKind.Pow, null);
+                                yield return new NCalcToken(NCalcTokenKind.Pow, null);
                             }
                             else
                             {
-                                yield return new Token(TokenKind.Mul, null);
+                                yield return new NCalcToken(NCalcTokenKind.Mul, null);
                             }
                             break;
                         case '/':
-                            yield return new Token(TokenKind.Div, null);
+                            yield return new NCalcToken(NCalcTokenKind.Div, null);
                             break;
                         case '%':
-                            yield return new Token(TokenKind.Mod, null);
+                            yield return new NCalcToken(NCalcTokenKind.Mod, null);
                             break;
                         case '(':
-                            yield return new Token(TokenKind.LParen, null);
+                            yield return new NCalcToken(NCalcTokenKind.LParen, null);
                             break;
                         case ')':
-                            yield return new Token(TokenKind.RParen, null);
+                            yield return new NCalcToken(NCalcTokenKind.RParen, null);
                             break;
                         case '?':
-                            yield return new Token(TokenKind.Question, null);
+                            yield return new NCalcToken(NCalcTokenKind.Question, null);
                             break;
                         case ':':
-                            yield return new Token(TokenKind.Colon, null);
+                            yield return new NCalcToken(NCalcTokenKind.Colon, null);
                             break;
                         case ',':
-                            yield return new Token(TokenKind.Comma, null);
+                            yield return new NCalcToken(NCalcTokenKind.Comma, null);
                             break;
                         case '^':
-                            yield return new Token(TokenKind.Pow, null);
+                            yield return new NCalcToken(NCalcTokenKind.Pow, null);
                             break;
                         case '>':
                             if (baseReader.Peek() == '=')
                             {
                                 baseReader.Read();
-                                yield return new Token(TokenKind.GtrEq, null);
+                                yield return new NCalcToken(NCalcTokenKind.GtrEq, null);
                             }
                             else if (baseReader.Peek() == '<')
                             {
                                 baseReader.Read();
-                                yield return new Token(TokenKind.NoEq, null);
+                                yield return new NCalcToken(NCalcTokenKind.NoEq, null);
                             }
                             else
                             {
-                                yield return new Token(TokenKind.Gtr, null);
+                                yield return new NCalcToken(NCalcTokenKind.Gtr, null);
                             }
                             break;
                         case '<':
                             if (baseReader.Peek() == '=')
                             {
                                 baseReader.Read();
-                                yield return new Token(TokenKind.LssEq, null);
+                                yield return new NCalcToken(NCalcTokenKind.LssEq, null);
                             }
                             else if (baseReader.Peek() == '>')
                             {
                                 baseReader.Read();
-                                yield return new Token(TokenKind.NoEq, null);
+                                yield return new NCalcToken(NCalcTokenKind.NoEq, null);
                             }
                             else
                             {
-                                yield return new Token(TokenKind.Lss, null);
+                                yield return new NCalcToken(NCalcTokenKind.Lss, null);
                             }
                             break;
                         case '=':
                             if (baseReader.Peek() == '=')
                             {
                                 baseReader.Read();
-                                yield return new Token(TokenKind.Eq, null);
+                                yield return new NCalcToken(NCalcTokenKind.Eq, null);
                             }
                             else
                             {
-                                yield return new Token(TokenKind.Eq, null);
+                                yield return new NCalcToken(NCalcTokenKind.Eq, null);
                             }
                             break;
                     }

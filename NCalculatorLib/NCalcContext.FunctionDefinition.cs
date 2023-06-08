@@ -1,6 +1,6 @@
 ﻿namespace NCalculatorLib
 {
-    public static partial class NCalc
+    public partial class NCalcContext
     {
         private static class FunctionDefinition
         {

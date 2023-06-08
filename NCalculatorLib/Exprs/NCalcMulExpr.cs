@@ -7,9 +7,9 @@ namespace NCalculatorLib.Exprs
     /// 
     /// <para>| unit mul_tail</para>
     /// </summary>
-    public class MulExpr : BinExpr
+    public class NCalcMulExpr : NCalcBinExpr
     {
-        public MulExpr(Expr left, MulTailExpr right) : base(left, right)
+        public NCalcMulExpr(NCalcExpr left, NCalcMulTailExpr right) : base(left, right)
         {
 
         }

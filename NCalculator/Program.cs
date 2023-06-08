@@ -1,17 +1,21 @@
 ﻿using NCalculatorLib;
+using NCalculatorLib.Exprs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
-namespace Null.Calculator
+namespace NullLib.Calculator
 {
     class Program
     {
         static void Main(string[] args)
         {
+            Expression<Func<int, int, int>> someExpression = (a, b) => a + b;
+
             if (args.Length == 0)
             {
                 Console.WriteLine("Calculator    By SlimeNull, 2022");
@@ -22,8 +26,8 @@ namespace Null.Calculator
 
 #if DEBUG
                 double count = 0;
-                NCalc.Variables["count"] = () => count++;
-                NCalc.Functions["myfunc"] = (values) => values.Sum();
+                NCalcContext.Default.Variables["count"] = () => count++;
+                NCalcContext.Default.Functions["myfunc"] = (values) => values.Sum();
 #endif
 
                 while (true)
@@ -35,7 +39,7 @@ namespace Null.Calculator
 
                     try
                     {
-                        Console.WriteLine(NCalc.Go(input));
+                        Console.WriteLine(NCalc.CompileEval(input));
                     }
                     catch(Exception ex)
                     {
@@ -49,7 +53,7 @@ namespace Null.Calculator
                 {
                     try
                     {
-                        Console.WriteLine(NCalc.Go(exprstr));
+                        Console.WriteLine(NCalc.CompileEval(exprstr));
                     }
                     catch (Exception ex)
                     {
